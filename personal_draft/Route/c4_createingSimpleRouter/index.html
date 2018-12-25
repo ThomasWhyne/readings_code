@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <a href="california_condor_frag.html" data-latin="california_condor_frag.html" class="nav_link">Condor</a>
+    <p class="content"></p>
+    <div class="main"></div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script type="x/template" id="tmpl">
+        <div class="container main">
+        <h2 id="birdname">{{birdname}}</h2>
+        <div class="hero-shot">
+            <a href="{{imglink}}" id="imglink">
+                <span role="img" aria-label="A Bird" class="hero-img"></span>
+            </a>
+            <p class="caption">
+                Pthotoby:
+                <a href="{{authorurl}}" id="atrribution">{{author}}</a>
+            </p>
+        </div>
+        <section class="content">
+            {{content}}
+        </section>
+    </div>
+    </script>
+    <script>
+        var Routes = [];
+        var latinNameMap = {};
+        var links = document.querySelectorAll(".nav_link");
+        var href;
+        var pageCache = {};
+        var birdData={};
+        var regExp=/(?:\{\{)([a-zA-z][^\s\}]+)(?:\}\})/g;
+        var pages={};
+        var idInc=0;
+        var template=document.getElementById("tmpl").innerHTML;
+        function hidePages(){
+            for (var page in pages){
+                pages[page].style.display="none";
+            }
+        }
+
+        function render(template,data){
+            return template.replace(regExp,function(fullMatch, capture){
+                console.log("fullMatch:",fullMatch);
+                console.log("capture:",capture);
+                if(data[capture]){
+                    return data[capture]
+                }else{
+                    return fullMatch;
+                }
+            })
+        }
+
+        function normalizeLink(path){
+            return path.match(/([a-z_]+\.html)/)[1];
+        }
+
+        function handlePage(path){
+            var href=normalizeLink(path);
+            // birdData.changePhoto(latinNameMap[href]);
+            // if(pageCache[href]){
+            //     document.querySelector(".content").innerHTML=pageCache[href];
+            // }else{
+            //     var htmlObj=$.ajax({url:href});
+            //     document.querySelector(".content").innerHTML=htmlObj.responseText;
+            //     pageCache[href]=htmlObj.responseText;
+            // }
+            if(!pages[href]){
+                hidePages();
+                var url= href.replace(".html", ".json");
+                $.ajax(url).then(function(data){
+                    var contentHolder=document.createElement("div");
+                    contentHolder.id="birds-"+idInc++;
+                    contentHolder.innerHTML=render(template,data)
+                    document.querySelector(".main").appendChild(contentHolder);
+                    pages[href]=contentHolder;
+                });
+            }
+        }
+        addRoute(/[a-z_]+\.html/,handlePage);
+
+        for(var i=0,len=links.length;i<len;i++){
+            href=normalizeLink(links[i].href);
+            latinNameMap[href]=links[i].getAttribute("data-latin");
+        }
+
+        function addRoute(route, callback, scope){
+            var routeObj={
+                route:route,
+                callback:callback,
+                scope:scope
+            }
+            Routes.push(routeObj);
+        }
+
+        function handleRoute(path, noHistory){
+            var len=Routes.length, scope;
+            for(var i=0;i<len;i++){
+                if(path.match(Routes[i].route)){
+                    if(Routes[i].scope){
+                        scope=Routes[i].scope;
+                    }else{
+                        scope=window;
+                    }
+
+                    if(!noHistory){
+                        history.pushState({},null,path);
+                    }
+                    Routes[i].callback.apply(scope,[path]);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        window.addEventListener("popstate",function(e){
+            handleRoute(window.location.href,true);
+        })
+
+        document.addEventListener("click",function(e){
+            if(e.target.href){
+                 e.preventDefault()
+                if(handleRoute(e.target.href)){
+                  
+                }
+            }
+        },true)
+
+
+    </script>
+</body>
+</html>

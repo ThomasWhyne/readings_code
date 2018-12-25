@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>History API</title>
+</head>
+<body>
+    <h1 id="number">1</h1>
+    <a href="?" id="forward" num=2 >go forward</a>
+    <script>
+        var link=document.getElementById("forward");
+        var number=document.getElementById("number");
+        var userHash=false;
+        var userExp=/#[0-9]+/;
+        if(!history.pushState){
+            userHash=true;
+        }
+        function handleStateChange(count){
+            number.innerHTML=count;
+            document.title="Number"+count;
+            link.href="?num="+parseInt(count,10);
+        }
+        function setNumFromUrl(){
+            if(location.search){
+                console.log(location.search)
+                var match=location.search.match(/num=([0-9]+)/);
+                if(match){
+                    if(userHash){
+                        location="index.html#"+match[1];
+                    }else{
+                        document.getElementById("number").innerHTML = match[1];
+                        document.title = "Number" + match[1];
+                    }
+                }
+            }else if(location.hash){
+                var match=location.hash.match(userExp);
+                document.getElementById("number").innerHTML = match[1];
+                document.title = "Number" + match[1];
+
+            }else{
+                document.getElementById("number").innerHTML=1;
+                document.title="Number"+1;
+            }
+        }
+        link.addEventListener("click",function(e){
+            e.preventDefault();
+            var newNum=Number(number.innerHTML);
+            number.innerHTML=++newNum;
+            history.pushState({count:newNum},null,"?num="+newNum);
+            document.title="Number"+newNum;
+        })  
+        // window.addEventListener("popstate",function(e){
+        //     console.log(e.state);
+        //     if(e.state && e.state.count){
+        //         number.innerHTML=e.state.count;
+        //         document.title="Number"+e.state.count;
+        //     }else{
+        //         setNumFromUrl()
+        //     }
+        // })
+        if (!userHash) {
+                window.addEventListener("popstate", function () {
+                    if (e.state && e.state.count) {
+                        handleStateChange(e.state.count);
+                    } else {
+                        setNumFromUrl()
+                    }
+                })
+            } else {
+                // if it dose not support popstate,the first popstate is not called,
+                // we have to call setNumFromUrl manually
+                setNumFromUrl();
+
+                //and keep in mind only change the url when it is actually changed
+                var oldHash = location.hash;
+                setInterval(function () {
+                    var match;
+                    if (window.hash !== oldHash) {
+                        match = location.hash.match(userExp);
+                        oldHash = location.hash;
+                        if (match) {
+                            handleStateChange(match[1]);
+                        }
+                    }
+                }, 100)
+            }
+    </script>
+</body>
+</html>
