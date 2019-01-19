@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>functions of css</title>
+    <style>
+        img{
+            display: inline-block;
+            position: relative;
+            height: 150px;
+            width:300px;
+            font-size: 0;
+            overflow: hidden;
+        }
+        img::after{
+                content: attr(alt);
+                position: absolute;bottom:0;left: 0;
+                width: 100%;
+                background-color: rgba(0,0,0,.5);   
+                text-align: center;
+                transform: translateY(100%);
+                transition: all .2s;
+                font-size: 26px;
+        }
+        img:hover::after{
+            transform: translateY(0);   
+        }
+    </style>
+</head>
+<body>
+    <h1>使用attr函数+alt实现动态图片内容描述:</h1>
+    <main>
+        <div class="img-container">
+            <img alt="这里有一张图片">
+        </div>
+    </main>
+</body>
+</html>

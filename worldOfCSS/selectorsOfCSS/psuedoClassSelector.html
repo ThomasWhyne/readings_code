@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>psuedo-class selector</title>
+    <style>
+        .active{
+            width: 200px;
+            height: 200px;
+            text-align: center;
+            user-select: none;
+        }
+        .button{
+            widows: 100px;
+            height: 100px;
+            margin: 0 auto;
+            background-color: #e3e3e3; 
+            transition: background-color .4s;
+        }
+        .button:active{
+            background-color: aqua;
+        }
+
+        /* -------------实现文本伸缩----------------------------- */
+        #check{
+            position: absolute;
+            clip: rect(0,0,0,0);
+        }
+        .content{
+            width: 100px;
+            line-height: 1.6;
+            word-break: break-all;
+            max-height: 50px;
+            transition: max-height 1s;
+            overflow: hidden;
+        }
+        .check-in,
+        .check-out{
+            color: teal;
+            cursor: pointer;
+        }
+        label[for="check"]:hover{
+            background-color: aqua;
+        }
+        .check-out{
+            display: none
+        }
+        :checked ~  .check-in{
+            display: none;
+        }
+        :checked ~  .check-out{
+            display: inline-block;
+        }
+        :checked ~ .content{
+            max-height: 300px;
+            background-color: #eee;
+        }
+
+        option:checked{
+            background-color: red;
+            color: white;
+        }
+        
+        input:default+label{
+            color: red;
+        }   
+
+        /* ----------------hover下拉列表------------------------ */
+        .hover>ul{
+            display: flex;
+            justify-content: space-around;
+        }
+        .hover>ul>li>ul{
+            display: none;
+        }
+        .hover>ul>li:hover>ul{
+            display: block;
+        }
+
+
+        /* ------------------------------------------------------------ */
+        .gallery{
+            position: relative;
+            height: 500px;
+            width: 500px;
+            border: 1px dashed #eeeeee;
+        }
+
+        .gallery>.item{
+            display: flex;
+            height: 100px;
+            justify-content: space-around;
+        }
+        .gallery>.item>div{
+            height: 80px;
+            width: 80px;
+        }
+        .gallery>.item>div:nth-child(2n+1){
+            background-color: aqua;
+        }
+        .gallery>.item>div:nth-child(2n){
+            background-color: crimson;
+        }
+        .fullsize{
+            display: none;
+        }
+        .previe:hover + .fullsize{
+            display: block;
+            height: 300px;
+            width: 300px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+        form:invalid{
+            background-color: red;
+        }
+        input:invalid+label{
+            background-color: aqua;
+        }
+
+        .lastoftype p:last-of-type{
+            color: red;
+        }
+        
+        .nthoftype>div p:nth-of-type(2n){
+            color: red;
+        }
+
+        .onlychild>div :only-child{
+            color: green;
+        }
+
+        .onlyoftype :only-of-type{
+            color: blueviolet;
+        }
+
+        .target div:nth-last-of-type(-n+3){
+            display: none;
+        }
+        .target div:target{
+            display: block;
+            width:300px;
+            height: 300px;
+            text-align: center;
+            line-height: 300px;
+            font-size: 26px;
+            font-family: 'Courier New', Courier, monospace;
+            color: brown;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="active">
+            <div>使用:active伪类选择</div>
+            <div class="button"></div>
+        </div>
+
+
+        <div class="checked">
+            <div>使用表单配合:checked伪类即max-height实现文本伸缩</div>
+            <div class="strech">
+                <input id="check" type="checkbox">
+                    <p>最主要是通过:checked伪类实现该效果</p>
+                    <div class="content">
+                        dsaaaaaaaaaaaaaddsada
+                        dadassadasdasdasdasda
+                        dsadsadasdasdasdadasd
+                        dadsadasddadasdadaada
+                        dsaaaaaaaaaaaaaddsada
+                        dadassadasdasdasdasda
+                        dsadsadasdasdasdadasd
+                        dadsadasddadasdadaada
+                        dsaaaaaaaaaaaaaddsada
+                        dadassadasdasdasdasda
+                        dsadsadasdasdasdadasd
+                        dadsadasddadasdadaada
+                    </div>
+                <label for="check" class="check-in">更多↓</label>
+                <label for="check" class="check-out">收起↑</label>
+            </div>
+            <div>在select标签下的option被:cheched选中</div>
+            <select name="country" id="select">
+                <option value="china">中国</option>
+                <option value="japan">日本</option>
+                <option value="korea">韩国</option>
+            </select>
+            <div class="default">
+                <div>：default用于指定默认选项的样式</div>
+                <input type="checkbox" id="china" checked>
+                <label for="china">中国</label>
+                <input type="checkbox" id="japan">
+                <label for="japan">日本</label>
+                <input type="checkbox" id="korea">
+                <label for="korea">韩国</label>
+            </div>
+            <div class="hover">
+                <div>使用:hover创建下拉列表</div>
+                <ul>
+                    <li>
+                        <a href="#">第一层列表</a>
+                        <ul>
+                            <li>第一层列表嵌套一</li>
+                            <li>第一层列表嵌套一</li>
+                            <li>第一层列表嵌套一</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">第一层列表</a>
+                        <ul>
+                            <li>第一层列表嵌套一</li>
+                            <li>第一层列表嵌套一</li>
+                            <li>第一层列表嵌套一</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">第一层列表</a>
+                        <ul>
+                            <li>第一层列表嵌套一</li>
+                            <li>第一层列表嵌套一</li>
+                            <li>第一层列表嵌套一</li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- <div class="gallery">
+                   <div class="item">
+                       <div class="previe"></div>
+                       <div class="fullsize"></div>
+                        <div class="previe"></div>
+                        <div class="fullsize"></div>
+                        <div class="previe"></div>
+                        <div class="fullsize"></div>
+                   </div>
+                </div> -->
+            </div>
+
+            <div class="invalid">
+                <form action="post">
+                    <label for="url">请输入网址:</label>
+                    <input type="url" id="url"/>
+                    <label for="email">请输入邮箱地址:</label>
+                    <input type="email" id="email">
+                    <button type="submit">提交</button>
+                </form>
+            </div>
+
+            <div class="lastoftype">
+                <div>:last-of-type</div>
+                <p>不会被选中</p>
+                <p>会被选中</p>
+                <span>
+                    <p>会被选中</p>
+                </span>
+            </div>
+
+            <div class="nthoftype">
+                <div>:nth-of-type</div>
+                <div>
+                    <span>span不会选取</span>
+                    <p>p1不会选取</p>
+                    <p>p2会被选取</p>
+                    <span>span不会选取</span>
+                    <p>p3不会选取</p>
+                    <p>p4会被选取</p>
+                </div>
+            </div>
+
+            <div class="onlychild">
+                <div>:onlychild</div>
+                <div>
+                    <i>当前i为div单独子元素，会被选取</i>
+                </div>
+                <div>
+                    <i>i有兄弟节点span</i>
+                    <span>span有兄弟节点i</span>
+                    <p>以上都不会被选取<i>但i是当前p元素唯一子节点，会被选取</i></p>
+                </div>
+            </div>
+
+            <div class="onlyoftype">
+                <div>:only-of-type</div>
+                <p>当前元素p拥有同类兄弟元素，不会选取</p>
+                <p>说的就是我</p>
+                <span>而span在这没有同类兄弟元素</span>
+            </div>
+
+            <div class="target">
+                <div>使用:target可以与url配合选择元素</div>
+                <ul>
+                    <li><a href="#target-1">显示id为target-1元素</a></li>
+                    <li><a href="#target-2">显示id为target-2元素</a></li>
+                    <li><a href="#target-3">显示id为target-3元素</a></li>
+                </ul>
+                <div id="target-1">我是target-1</div>
+                <div id="target-2">我是target-2</div>
+                <div id="target-3">我是target-3</div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

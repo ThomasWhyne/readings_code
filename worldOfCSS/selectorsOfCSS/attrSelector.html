@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>attribute selector</title>
+    <style>
+        .container{
+            background-color: #e3e3e3;
+        }
+        li{
+            list-style-type:upper-roman;
+        }
+        [data-name]{
+            background-color: red;
+            color: #ffffff;
+        }
+        [data-name="mark"]{
+            background-color: aqua;
+        }
+        [data-name~="larry"]{
+            background-color: teal;
+            color: blue;
+        }
+        [data-name^="jacks"]{
+            color: burlywood;
+            background-color: crimson;
+        }
+        [data-name$="el"]{
+            background-color: green;
+            color: darkmagenta;
+        }
+        [data-name*="a"]{
+            font-style: italic;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <ul>
+            <li data-name="jack">被[data-name]选取</li>
+            <li data-name="mark">被[data-name="mark"]选取</li>
+            <li>使用[attr=val]进行全等选择时，属性中包含值不会被选取</li>
+            <li data-name="jack mark larry">被[data-name~="larry"]选取</li>
+            <li data-name="mark">被[data-name="mark"]选取</li>
+            <li data-name="jack">被[data-name]选取</li>
+            <li data-name="jackson">被[attr^="jackie"]选取</li>
+            <li data-name="samuel">被[attr$="el"]选取</li>
+            <li data-name="witha">所有斜体字项均为[attr*="a"]选取</li>
+        </ul>
+    </div>
+</body>
+</html>

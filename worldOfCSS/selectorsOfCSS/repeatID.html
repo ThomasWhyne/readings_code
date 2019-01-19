@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>selectors of css</title>
+</head>
+    <style>
+        #item{
+            background-color: red;
+        }
+    </style>
+<body>
+    <div class="container">
+        <h1>测试重复id选择下chrome的表现</h1>
+        <div class="list">
+            <ul>
+                <li id="item">第一列</li>
+                <li id="item">第二列</li>
+                <li id="item">第三列</li>
+            </ul>
+        </div>
+        <div class="footer">
+            令人感到惊奇的是，在chrome、opera、ie下id重复使用再样式应用上并未出现问题
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>pseudo elemtn</title>
+    <style>
+        .container{
+            width: 500px;
+            height: 300px;
+        }
+        .container li{
+            position: relative;
+            list-style: none;
+            height: 90px;
+            background-color: #eee;
+            margin: 10px auto;
+            line-height: 90px;
+            text-indent: 50px; 
+        }
+        .container li.done{
+            background-color: bisque;
+        }
+        .container li.done::before{
+            content: '';
+            position: absolute;
+            display: inline-block;
+            width: 30px;
+            height: 10px;
+            border: solid;
+            border-width: 0 0 8px 5px;
+            border-color: blueviolet;
+            transform: rotateZ(-45deg);
+            top: 34px;
+            left: 6px;
+        }
+        #movie{
+            position: absolute;
+            clip: rect(0,0,0,0);
+        }
+        label{
+            display: inline-block;
+             position: relative;
+            list-style: none;
+            width: 100%;
+            height: 90px;
+            background-color: #eee;
+            margin: 10px auto;
+            line-height: 90px;
+            text-indent: 50px; 
+        }
+        input:checked+label{
+            background-color:blueviolet;
+        }
+        input:checked+label:before{
+            content: '';
+            position: absolute;
+            display: inline-block;
+            width: 30px;
+            height: 10px;
+            border: solid;
+            border-width: 0 0 8px 5px;
+            border-color: blueviolet;
+            transform: rotateZ(-45deg);
+            top: 34px;
+            left: 6px;
+        }
+
+        p>span{
+            position: relative;
+            display: inline-block;
+            cursor:help;
+            color: blue;
+        }
+        span:hover::after{
+            display: block;
+            content: attr(data-tip);
+            width: 300px;
+            height: 50px;
+            background-color:bisque;
+            color: black;
+            top: 100%;
+        }
+        i::selection{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>使用js搭配before实现待办事项选中</h1>
+    <div class="container">
+        <ul id="withjs">
+            <li>看电影</li>
+            <li>吃饭</li>
+            <li>睡觉</li>
+        </ul>
+    </div>
+    <div class="cintainer">
+        <h1>使用css表单搭配伪类实现选中</h1>
+        <div class="purecss">
+            <input type="checkbox" id="movie">
+            <label for="movie">看电影</label>
+        </div>
+    </div>
+    <div class="container">
+        <h1>使用::after+attr实现辅助内容提示</h1>
+        <p>这是一段文本，文本中的span元素文本内容悬停时会有悬浮框提示。<span data-tip="这是一个使用::after+attr(data-tip)实现的内容查看">悬停这里查看</span></p>
+    </div>
+    <div>
+        <i>使用::selection更改被选中文本样式</i>
+    </div>
+    <script>
+        const list=document.querySelector("#withjs");
+        list.addEventListener("click",function(e){
+            if(e.target.tagName="LI"){
+                e.target.classList.toggle("done");
+            }
+        })
+    </script>
+</body>
+</html>
